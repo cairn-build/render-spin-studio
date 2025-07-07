@@ -1,7 +1,7 @@
+import { Canvas, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import { Product } from "@/types/Product";
 import { ProductCard } from "./ProductCard";
-import { Canvas, useFrame } from "@react-three/fiber";
 
 interface ProductGridProps {
   products: Product[];
@@ -27,18 +27,16 @@ export const ProductGrid = ({
 
   return (
     <>
-      {/* Functional but invisible canvas */}
+      {/* Single hidden canvas to drive shared rotation */}
       <Canvas
         style={{
           position: "absolute",
-          top: "-9999px",
-          left: "-9999px",
           width: 1,
           height: 1,
+          top: "-9999px",
+          left: "-9999px",
         }}
       >
-        <ambientLight intensity={0.6} />
-        <directionalLight position={[10, 10, 5]} intensity={1} />
         <SharedRotationManager rotationRef={globalRotationRef} />
       </Canvas>
 
@@ -47,8 +45,8 @@ export const ProductGrid = ({
           <ProductCard
             key={product.id}
             product={product}
-            onSelect={onProductSelect}
             globalRotation={globalRotationRef}
+            onSelect={onProductSelect}
           />
         ))}
       </div>

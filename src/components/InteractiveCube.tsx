@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useFrame, ThreeEvent } from "@react-three/fiber";
+import { useFrame, useThree, ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
 
 interface CubeProps {
@@ -8,16 +8,19 @@ interface CubeProps {
 }
 
 const InteractiveCube = ({ color, globalRotation }: CubeProps) => {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const groupRef = useRef<THREE.Group>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [resetting, setResetting] = useState(false);
+
   const isInteracting = useRef(false);
   const lastInteractionTime = useRef(Date.now());
   const lastPointer = useRef<[number, number] | null>(null);
 
+  const { gl } = useThree(); // Get canvas
+
   useFrame((_, delta) => {
-    if (!meshRef.current) return;
-    const rot = meshRef.current.rotation;
+    if (!groupRef.current) return;
+    const rot = groupRef.current.rotation;
     const now = Date.now();
 
     if (isInteracting.current && now - lastInteractionTime.current > 1200) {
@@ -54,27 +57,32 @@ const InteractiveCube = ({ color, globalRotation }: CubeProps) => {
 
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
-    lastInteractionTime.current = Date.now();
+    const bounds = gl.domElement.getBoundingClientRect();
+    lastPointer.current = [e.clientX - bounds.left, e.clientY - bounds.top];
     isInteracting.current = true;
+    lastInteractionTime.current = Date.now();
     setResetting(false);
-    lastPointer.current = [e.clientX, e.clientY];
 
     window.addEventListener("pointermove", handleGlobalPointerMove);
     window.addEventListener("pointerup", handleGlobalPointerUp);
   };
 
   const handleGlobalPointerMove = (e: PointerEvent) => {
-    if (!isInteracting.current || !meshRef.current || !lastPointer.current)
+    if (!isInteracting.current || !groupRef.current || !lastPointer.current)
       return;
 
+    const bounds = gl.domElement.getBoundingClientRect();
+    const pointerX = e.clientX - bounds.left;
+    const pointerY = e.clientY - bounds.top;
+
     const [prevX, prevY] = lastPointer.current;
-    const deltaX = e.clientX - prevX;
-    const deltaY = e.clientY - prevY;
+    const deltaX = pointerX - prevX;
+    const deltaY = pointerY - prevY;
 
-    meshRef.current.rotation.y += deltaX * 0.01;
-    meshRef.current.rotation.x += deltaY * 0.01;
+    groupRef.current.rotation.y += deltaX * 0.01;
+    groupRef.current.rotation.x += deltaY * 0.01;
 
-    lastPointer.current = [e.clientX, e.clientY];
+    lastPointer.current = [pointerX, pointerY];
     lastInteractionTime.current = Date.now();
   };
 
@@ -89,21 +97,22 @@ const InteractiveCube = ({ color, globalRotation }: CubeProps) => {
 
   useEffect(() => {
     return () => {
-      // purely to satisfy ESLint
+      // placeholder for cleanup
     };
   }, []);
 
   return (
-    <mesh
-      ref={meshRef}
-      onPointerDown={handlePointerDown}
-      onPointerOver={() => setIsHovered(true)}
-      onPointerOut={() => setIsHovered(false)}
-      scale={isHovered ? 1.1 : 1}
-    >
-      <boxGeometry args={[2, 2, 2]} />
-      <meshStandardMaterial color={color} roughness={0.3} metalness={0.1} />
-    </mesh>
+    <group ref={groupRef}>
+      <mesh
+        onPointerDown={handlePointerDown}
+        onPointerOver={() => setIsHovered(true)}
+        onPointerOut={() => setIsHovered(false)}
+        scale={isHovered ? 1.1 : 1}
+      >
+        <boxGeometry args={[2, 2, 2]} />
+        <meshStandardMaterial color={color} roughness={0.3} metalness={0.1} />
+      </mesh>
+    </group>
   );
 };
 

@@ -1,13 +1,25 @@
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { Product } from "@/types/Product";
 import InteractiveCube from "./InteractiveCube";
+import { MutableRefObject } from "react";
 
 interface ProductCardProps {
   product: Product;
   onSelect: (product: Product) => void;
-  globalRotation: React.MutableRefObject<number>;
+  globalRotation: MutableRefObject<number>;
 }
+
+const SharedRotationManager = ({
+  rotationRef,
+}: {
+  rotationRef: MutableRefObject<number>;
+}) => {
+  useFrame((_, delta) => {
+    rotationRef.current += delta * 0.5;
+  });
+  return null;
+};
 
 export const ProductCard = ({
   product,
