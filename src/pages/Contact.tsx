@@ -1,5 +1,7 @@
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import sceltaLogo from "@/assets/scelta-1.png";
+import anrLogo from "@/assets/anr-1.png";
 
 const Contact = () => {
   return (
@@ -7,9 +9,25 @@ const Contact = () => {
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-stone-800 to-stone-900 text-white py-16">
         <div className="container mx-auto px-6 text-center">
-          <h1 className="text-5xl font-bold mb-4 tracking-tight">
-            Contact Us
-          </h1>
+          {/* Logos Above Title */}
+          <div className="flex justify-center items-center gap-12 mb-6 h-16">
+            <div className="h-80 w-auto">
+              <img
+                src={anrLogo}
+                alt="ANR Logo"
+                className="h-full w-auto object-contain filter invert"
+              />
+            </div>
+            <div className="w-1/4 max-w-[260px] h-full">
+              <img
+                src={sceltaLogo}
+                alt="Scelta Logo"
+                className="w-full h-full object-contain filter invert"
+              />
+            </div>
+          </div>
+
+          <h1 className="text-5xl font-bold mb-4 tracking-tight">Contact Us</h1>
           <p className="text-xl text-stone-300 max-w-2xl mx-auto">
             Get in touch to discuss your concrete project
           </p>
@@ -19,7 +37,6 @@ const Contact = () => {
       {/* Contact Information */}
       <div className="container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          
           {/* Phone */}
           <Card className="text-center">
             <CardHeader>
@@ -60,8 +77,10 @@ const Contact = () => {
             </CardHeader>
             <CardContent>
               <p className="text-stone-700 leading-relaxed">
-                921 Tecumseh Road West<br />
-                Windsor, Ontario<br />
+                921 Tecumseh Road West
+                <br />
+                Windsor, Ontario
+                <br />
                 N8X 2A9, Canada
               </p>
             </CardContent>
@@ -78,7 +97,8 @@ const Contact = () => {
           </CardHeader>
           <CardContent>
             <p className="text-stone-700">
-              Monday - Friday<br />
+              Monday - Friday
+              <br />
               8am - 5pm
             </p>
             <p className="text-sm text-stone-500 mt-2 italic">

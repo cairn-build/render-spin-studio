@@ -4,6 +4,8 @@ import { ProductGrid } from "@/components/ProductGrid";
 import { ProductModal } from "@/components/ProductModal";
 import { Product } from "@/types/Product";
 import { products } from "@/data/products";
+import sceltaLogo from "@/assets/scelta-1.png";
+import anrLogo from "@/assets/anr-1.png";
 
 const Catalogue = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>("All");
@@ -19,6 +21,24 @@ const Catalogue = () => {
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-stone-800 to-stone-900 text-white py-16">
         <div className="container mx-auto px-6 text-center">
+          {/* Logos Above Title */}
+          <div className="flex justify-center items-center gap-12 mb-6 h-16">
+            <div className="h-80 w-auto">
+              <img
+                src={anrLogo}
+                alt="ANR Logo"
+                className="h-full w-auto object-contain filter invert"
+              />
+            </div>
+            <div className="w-1/4 max-w-[260px] h-full">
+              <img
+                src={sceltaLogo}
+                alt="Scelta Logo"
+                className="w-full h-full object-contain filter invert"
+              />
+            </div>
+          </div>
+
           <h1 className="text-5xl font-bold mb-4 tracking-tight">
             ANR Concrete Studio
           </h1>
