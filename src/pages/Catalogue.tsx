@@ -5,7 +5,7 @@ import { ProductModal } from "@/components/ProductModal";
 import { Product } from "@/types/Product";
 import { products } from "@/data/products";
 
-const Index = () => {
+const Catalogue = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>("All");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
@@ -53,4 +53,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Catalogue;
