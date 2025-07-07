@@ -75,11 +75,21 @@ export const ProductModal = ({ product, onClose }: ProductModalProps) => {
               <p className="text-stone-600">{product.material}</p>
             </div>
             
-            <div>
-              <h3 className="text-lg font-semibold text-stone-800 mb-2">Category</h3>
-              <div className="inline-block px-4 py-2 bg-stone-800 text-white rounded-full text-sm">
-                {product.category}
+            <div className="flex gap-4">
+              <div>
+                <h3 className="text-lg font-semibold text-stone-800 mb-2">Category</h3>
+                <div className="inline-block px-4 py-2 bg-stone-800 text-white rounded-full text-sm">
+                  {product.category}
+                </div>
               </div>
+              {product.subcategory && (
+                <div>
+                  <h3 className="text-lg font-semibold text-stone-800 mb-2">Type</h3>
+                  <div className="inline-block px-4 py-2 bg-stone-600 text-white rounded-full text-sm">
+                    {product.subcategory}
+                  </div>
+                </div>
+              )}
             </div>
             
             <div className="pt-4">

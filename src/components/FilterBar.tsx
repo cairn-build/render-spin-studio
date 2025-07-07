@@ -6,12 +6,23 @@ interface FilterBarProps {
   onFilterChange: (filter: string) => void;
 }
 
-const filters = ["All", "Kitchen", "Bath", "Fireplace", "Furniture", "Fire", "Lifestyle"];
+const categoryFilters = [
+  "All",
+  "Countertops", 
+  "Bathroom", 
+  "Fireplaces", 
+  "Landscaping", 
+  "Fire Features", 
+  "Shower Systems", 
+  "Furniture", 
+  "Range Hoods", 
+  "Stair Treads"
+];
 
 export const FilterBar = ({ selectedFilter, onFilterChange }: FilterBarProps) => {
   return (
     <div className="flex flex-wrap justify-center gap-3 mb-12 p-6 bg-white rounded-2xl shadow-lg border border-stone-200">
-      {filters.map((filter) => (
+      {categoryFilters.map((filter) => (
         <Button
           key={filter}
           variant={selectedFilter === filter ? "default" : "outline"}
