@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { products } from "@/data/products";
 import { Product } from "@/types/Product";
+import { ProductCard } from "@/components/ProductCard";
 
 interface ServiceCategory {
   name: string;
@@ -11,6 +12,7 @@ interface ServiceCategory {
 
 const Services = () => {
   const [expandedServices, setExpandedServices] = useState<string[]>([]);
+  const globalRotationRef = useRef(0);
 
   const toggleService = (serviceName: string) => {
     setExpandedServices(prev =>
@@ -118,7 +120,7 @@ const Services = () => {
                         <h4 className="font-medium text-stone-800 mb-3">
                           Available Options:
                         </h4>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-2 mb-6">
                           {service.catalogueItems.map((item) => (
                             <span
                               key={item.id}
@@ -126,6 +128,16 @@ const Services = () => {
                             >
                               {item.subcategory || item.title}
                             </span>
+                          ))}
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {service.catalogueItems.slice(0, 3).map((product) => (
+                            <ProductCard
+                              key={product.id}
+                              product={product}
+                              globalRotation={globalRotationRef}
+                              onSelect={() => {}} // No modal in services page
+                            />
                           ))}
                         </div>
                       </div>

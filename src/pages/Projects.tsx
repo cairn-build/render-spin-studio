@@ -1,29 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { projectsData } from "@/data/projectData";
 
 const Projects = () => {
   const navigate = useNavigate();
 
-  const projects = [
-    {
-      id: "wall-panels",
-      title: "Wall Panels",
-      description: "Custom concrete wall panel installations",
-      image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop",
-    },
-    {
-      id: "vanities",
-      title: "Vanities",
-      description: "Bespoke concrete bathroom vanities",
-      image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&h=300&fit=crop",
-    },
-    {
-      id: "tables",
-      title: "Tables",
-      description: "Custom concrete table designs",
-      image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop",
-    },
-  ];
+  const projects = Object.values(projectsData).map(project => ({
+    id: project.id,
+    title: project.title,
+    description: project.description,
+    image: project.images[0], // Use the first image as the cover
+  }));
 
   const handleProjectClick = (projectId: string) => {
     navigate(`/projects/${projectId}`);

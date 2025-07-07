@@ -1,27 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { projectsData } from "@/data/projectData";
 
 const ProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const projectData: { [key: string]: { title: string; description: string } } = {
-    "wall-panels": {
-      title: "Wall Panels",
-      description: "Detailed information about our wall panel projects will be displayed here.",
-    },
-    "vanities": {
-      title: "Vanities",
-      description: "Detailed information about our vanity projects will be displayed here.",
-    },
-    "tables": {
-      title: "Tables",
-      description: "Detailed information about our table projects will be displayed here.",
-    },
-  };
-
-  const project = projectData[id || ""];
+  const project = projectsData[id || ""];
 
   if (!project) {
     return (
@@ -42,7 +28,7 @@ const ProjectDetail = () => {
           <Button
             variant="outline"
             onClick={() => navigate("/projects")}
-            className="mb-6 text-white border-white hover:bg-white hover:text-stone-800"
+            className="mb-6 text-stone-800 border-stone-800 bg-white hover:bg-stone-100"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Projects
@@ -51,7 +37,7 @@ const ProjectDetail = () => {
             {project.title}
           </h1>
           <p className="text-xl text-stone-300 max-w-2xl">
-            {project.description}
+            {project.detailedDescription}
           </p>
         </div>
       </div>
@@ -61,10 +47,18 @@ const ProjectDetail = () => {
         <div className="bg-white rounded-2xl shadow-lg p-8">
           <h2 className="text-2xl font-bold text-stone-800 mb-4">Project Details</h2>
           <p className="text-stone-600 mb-6">
-            This page will contain detailed information, images, and specifications for the {project.title.toLowerCase()} project.
+            {project.detailedDescription}
           </p>
-          <div className="h-64 bg-gradient-to-br from-stone-100 to-stone-200 rounded-lg flex items-center justify-center">
-            <p className="text-stone-500">Project gallery will be added here</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {project.images.map((image, index) => (
+              <div key={index} className="overflow-hidden rounded-lg shadow-lg">
+                <img 
+                  src={image} 
+                  alt={`${project.title} ${index + 1}`}
+                  className="w-full h-64 object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
