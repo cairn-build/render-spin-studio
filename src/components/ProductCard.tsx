@@ -22,7 +22,7 @@ const InteractiveCube = ({ color }: CubeProps) => {
   useFrame((state, delta) => {
     if (meshRef.current && !isUserInteracting) {
       meshRef.current.rotation.x += delta * 0.5;
-      meshRef.current.rotation.y += delta * 0.5;
+      meshRef.current.rotation.y += delta * 0.1;
     }
   });
 
@@ -69,8 +69,8 @@ export const ProductCard = ({ product, onSelect }: ProductCardProps) => {
             enableRotate={true}
           />
         </Canvas>
-        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center pointer-events-none">
-          <div className="text-white text-sm bg-black bg-opacity-50 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute top-2 left-2 pointer-events-none">
+          <div className="text-white text-xs bg-black bg-opacity-50 px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             Double-click to view details
           </div>
         </div>
