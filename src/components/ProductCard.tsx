@@ -1,6 +1,6 @@
 
 import { useState, useRef } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame, ThreeEvent } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { Product } from "@/types/Product";
 import * as THREE from "three";
@@ -17,12 +17,32 @@ interface CubeProps {
 const InteractiveCube = ({ color }: CubeProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
+  const [isUserInteracting, setIsUserInteracting] = useState(false);
+
+  useFrame((state, delta) => {
+    if (meshRef.current && !isUserInteracting) {
+      meshRef.current.rotation.x += delta * 0.5;
+      meshRef.current.rotation.y += delta * 0.5;
+    }
+  });
+
+  const handlePointerDown = (event: ThreeEvent<PointerEvent>) => {
+    event.stopPropagation();
+    setIsUserInteracting(true);
+  };
+
+  const handlePointerUp = (event: ThreeEvent<PointerEvent>) => {
+    event.stopPropagation();
+    setIsUserInteracting(false);
+  };
 
   return (
     <mesh
       ref={meshRef}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
       scale={hovered ? 1.1 : 1}
     >
       <boxGeometry args={[2, 2, 2]} />
@@ -37,10 +57,7 @@ const InteractiveCube = ({ color }: CubeProps) => {
 
 export const ProductCard = ({ product, onSelect }: ProductCardProps) => {
   return (
-    <div 
-      className="bg-white rounded-2xl shadow-lg overflow-hidden border border-stone-200 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 cursor-pointer group"
-      onDoubleClick={() => onSelect(product)}
-    >
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-stone-200 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 cursor-pointer group">
       <div className="h-64 bg-gradient-to-br from-stone-100 to-stone-200 relative overflow-hidden">
         <Canvas camera={{ position: [3, 3, 3], fov: 50 }}>
           <ambientLight intensity={0.6} />
@@ -48,19 +65,21 @@ export const ProductCard = ({ product, onSelect }: ProductCardProps) => {
           <InteractiveCube color={product.color} />
           <OrbitControls 
             enableZoom={false} 
-            autoRotate 
-            autoRotateSpeed={2}
             enablePan={false}
+            enableRotate={true}
           />
         </Canvas>
-        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center pointer-events-none">
           <div className="text-white text-sm bg-black bg-opacity-50 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             Double-click to view details
           </div>
         </div>
       </div>
       
-      <div className="p-6">
+      <div 
+        className="p-6"
+        onDoubleClick={() => onSelect(product)}
+      >
         <h3 className="text-xl font-bold text-stone-800 mb-2">
           {product.title}
         </h3>
