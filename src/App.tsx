@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
+import Home from "./pages/Home";
 import Catalogue from "./pages/Catalogue";
 import Projects from "./pages/Projects";
 import ProjectDetail from "./pages/ProjectDetail";
@@ -22,7 +23,8 @@ const App = () => (
         <div className="min-h-screen">
           <Navigation />
           <Routes>
-            <Route path="/" element={<Catalogue />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/catalogue" element={<Catalogue />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/projects/:id" element={<ProjectDetail />} />
             <Route path="/services" element={<Services />} />
