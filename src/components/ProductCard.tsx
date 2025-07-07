@@ -18,11 +18,16 @@ const InteractiveCube = ({ color }: CubeProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
   const [isUserInteracting, setIsUserInteracting] = useState(false);
+  const autoRotationRef = useRef(0); // Track auto-rotation progress
 
   useFrame((state, delta) => {
-    if (meshRef.current && !isUserInteracting) {
-      meshRef.current.rotation.x += delta * 0.5;
-      meshRef.current.rotation.y += delta * 0.1;
+    if (meshRef.current) {
+      if (!isUserInteracting) {
+        // Only rotate on x-axis, track the rotation
+        autoRotationRef.current += delta * 0.5;
+        meshRef.current.rotation.x = autoRotationRef.current;
+        meshRef.current.rotation.y = 0; // Keep y-axis stable
+      }
     }
   });
 
@@ -34,6 +39,13 @@ const InteractiveCube = ({ color }: CubeProps) => {
   const handlePointerUp = (event: ThreeEvent<PointerEvent>) => {
     event.stopPropagation();
     setIsUserInteracting(false);
+    
+    // Smoothly return to auto-rotation state
+    if (meshRef.current) {
+      // Reset to current auto-rotation position
+      meshRef.current.rotation.x = autoRotationRef.current;
+      meshRef.current.rotation.y = 0;
+    }
   };
 
   return (
@@ -59,7 +71,7 @@ export const ProductCard = ({ product, onSelect }: ProductCardProps) => {
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-stone-200 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 cursor-pointer group">
       <div className="h-64 bg-gradient-to-br from-stone-100 to-stone-200 relative overflow-hidden">
-        <Canvas camera={{ position: [3, 3, 3], fov: 50 }}>
+        <Canvas camera={{ position: [3, 4, 3], fov: 50 }}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[10, 10, 5]} intensity={1} />
           <InteractiveCube color={product.color} />
