@@ -1,0 +1,73 @@
+
+import { useState, useRef } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import { Product } from "@/types/Product";
+import * as THREE from "three";
+
+interface ProductCardProps {
+  product: Product;
+  onSelect: (product: Product) => void;
+}
+
+interface CubeProps {
+  color: string;
+}
+
+const InteractiveCube = ({ color }: CubeProps) => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <mesh
+      ref={meshRef}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+      scale={hovered ? 1.1 : 1}
+    >
+      <boxGeometry args={[2, 2, 2]} />
+      <meshStandardMaterial 
+        color={color} 
+        roughness={0.3}
+        metalness={0.1}
+      />
+    </mesh>
+  );
+};
+
+export const ProductCard = ({ product, onSelect }: ProductCardProps) => {
+  return (
+    <div 
+      className="bg-white rounded-2xl shadow-lg overflow-hidden border border-stone-200 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 cursor-pointer group"
+      onDoubleClick={() => onSelect(product)}
+    >
+      <div className="h-64 bg-gradient-to-br from-stone-100 to-stone-200 relative overflow-hidden">
+        <Canvas camera={{ position: [3, 3, 3], fov: 50 }}>
+          <ambientLight intensity={0.6} />
+          <directionalLight position={[10, 10, 5]} intensity={1} />
+          <InteractiveCube color={product.color} />
+          <OrbitControls 
+            enableZoom={false} 
+            autoRotate 
+            autoRotateSpeed={2}
+            enablePan={false}
+          />
+        </Canvas>
+        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+          <div className="text-white text-sm bg-black bg-opacity-50 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            Double-click to view details
+          </div>
+        </div>
+      </div>
+      
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-stone-800 mb-2">
+          {product.title}
+        </h3>
+        <div className="inline-block px-3 py-1 bg-stone-100 text-stone-600 text-sm rounded-full">
+          {product.category}
+        </div>
+      </div>
+    </div>
+  );
+};
