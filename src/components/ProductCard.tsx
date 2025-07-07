@@ -41,8 +41,19 @@ export const ProductCard = ({
         <h3 className="text-xl font-bold text-stone-800 mb-2">
           {product.title}
         </h3>
-        <div className="inline-block px-3 py-1 bg-stone-100 text-stone-600 text-sm rounded-full">
-          {product.category}
+        <div className="flex gap-2">
+          <div>
+            <div className="inline-block px-2 py-0.5 bg-stone-800 text-white rounded-full text-xs">
+              {product.category}
+            </div>
+          </div>
+          {product.subcategory && (
+            <div>
+              <div className="inline-block px-2 py-0.5 bg-stone-600 text-white rounded-full text-xs">
+                {product.subcategory}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
