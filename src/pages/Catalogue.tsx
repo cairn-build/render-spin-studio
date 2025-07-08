@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FilterBar } from "@/components/FilterBar";
 import { ProductGrid } from "@/components/ProductGrid";
 import { ProductModal } from "@/components/ProductModal";
-import { InquiryCartDrawer } from "@/components/InquiryCartDrawer";
+import { FloatingInquiryCart } from "@/components/FloatingInquiryCart";
 import { Product } from "@/types/Product";
 import { products } from "@/data/products";
 import sceltaLogo from "@/assets/scelta-1.png";
@@ -52,12 +52,11 @@ const Catalogue = () => {
 
       {/* Filter and Grid */}
       <div className="container mx-auto px-6 py-12">
-        <div className="flex justify-between items-center mb-8">
+        <div className="mb-12">
           <FilterBar
             selectedFilter={selectedFilter}
             onFilterChange={setSelectedFilter}
           />
-          <InquiryCartDrawer />
         </div>
 
         <ProductGrid
@@ -65,6 +64,9 @@ const Catalogue = () => {
           onProductSelect={setSelectedProduct}
         />
       </div>
+
+      {/* Floating Inquiry Cart */}
+      <FloatingInquiryCart />
 
       {/* Modal */}
       {selectedProduct && (

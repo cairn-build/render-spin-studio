@@ -1,12 +1,16 @@
 import { useState } from 'react';
-import { ShoppingCart, X, Send } from 'lucide-react';
+import { X, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { useInquiryCart } from '@/contexts/InquiryCartContext';
 import { InquirySubmissionForm } from './InquirySubmissionForm';
 
-export const InquiryCartDrawer = () => {
+interface InquiryCartDrawerProps {
+  onClose: () => void;
+}
+
+export const InquiryCartDrawer = ({ onClose }: InquiryCartDrawerProps) => {
   const { state, removeItem } = useInquiryCart();
   const [showSubmissionForm, setShowSubmissionForm] = useState(false);
 
@@ -19,33 +23,23 @@ export const InquiryCartDrawer = () => {
   }
 
   return (
-    <Drawer>
-      <DrawerTrigger asChild>
-        <Button variant="outline" className="relative">
-          <ShoppingCart className="w-4 h-4 mr-2" />
-          Inquiry Cart
-          {state.items.length > 0 && (
-            <Badge className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center">
-              {state.items.length}
-            </Badge>
-          )}
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader>
-          <DrawerTitle>Inquiry Cart ({state.items.length} items)</DrawerTitle>
-        </DrawerHeader>
-        <div className="p-4 max-h-96 overflow-y-auto">
+    <Dialog open={true} onOpenChange={onClose}>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden">
+        <DialogHeader>
+          <DialogTitle>Inquiry Cart ({state.items.length} items)</DialogTitle>
+        </DialogHeader>
+        
+        <div className="overflow-y-auto max-h-96">
           {state.items.length === 0 ? (
             <p className="text-center text-muted-foreground py-8">
               Your inquiry cart is empty. Add some products to get started!
             </p>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-4 p-1">
               {state.items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center justify-between p-4 border rounded-lg bg-card"
+                  className="flex items-center justify-between p-4 border rounded-lg bg-card hover:bg-muted/50 transition-colors"
                 >
                   <div className="flex-1">
                     <h4 className="font-semibold">{item.title}</h4>
@@ -66,20 +60,22 @@ export const InquiryCartDrawer = () => {
                   </Button>
                 </div>
               ))}
-              <div className="pt-4 border-t">
-                <Button
-                  onClick={() => setShowSubmissionForm(true)}
-                  className="w-full"
-                  disabled={state.items.length === 0}
-                >
-                  <Send className="w-4 h-4 mr-2" />
-                  Submit Inquiry
-                </Button>
-              </div>
             </div>
           )}
         </div>
-      </DrawerContent>
-    </Drawer>
+        
+        {state.items.length > 0 && (
+          <div className="pt-4 border-t">
+            <Button
+              onClick={() => setShowSubmissionForm(true)}
+              className="w-full"
+            >
+              <Send className="w-4 h-4 mr-2" />
+              Submit Inquiry
+            </Button>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 };
