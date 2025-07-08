@@ -2,6 +2,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { Product } from "@/types/Product";
 import InteractiveCube from "./InteractiveCube";
+import { InquiryCartButton } from "./InquiryCartButton";
 import { MutableRefObject } from "react";
 
 interface ProductCardProps {
@@ -53,7 +54,7 @@ export const ProductCard = ({
         <h3 className="text-xl font-bold text-stone-800 mb-2">
           {product.title}
         </h3>
-        <div className="flex gap-2">
+        <div className="flex gap-2 mb-3">
           <div>
             <div className="inline-block px-2 py-0.5 bg-stone-800 text-white rounded-full text-xs">
               {product.category}
@@ -67,6 +68,7 @@ export const ProductCard = ({
             </div>
           )}
         </div>
+        <InquiryCartButton product={product} />
       </div>
     </div>
   );
