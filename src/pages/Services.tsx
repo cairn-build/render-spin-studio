@@ -5,12 +5,24 @@ import { Product } from "@/types/Product";
 import { ProductCard } from "@/components/ProductCard";
 import sceltaLogo from "@/assets/scelta-1.png";
 import anrLogo from "@/assets/anr-1.png";
+import { Canvas, useFrame } from "@react-three/fiber";
 
 interface ServiceCategory {
   name: string;
   description: string;
   catalogueItems: Product[];
 }
+
+const SharedRotationManager = ({
+  rotationRef,
+}: {
+  rotationRef: React.MutableRefObject<number>;
+}) => {
+  useFrame((_, delta) => {
+    rotationRef.current += delta * 0.5;
+  });
+  return null;
+};
 
 const Services = () => {
   const [expandedServices, setExpandedServices] = useState<string[]>([]);
@@ -82,7 +94,7 @@ const Services = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-stone-50 to-stone-100">
+    <div className="min-h-screen bg-gradient-to-br from-stone-50 to-stone-100 pt-8">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-stone-800 to-stone-900 text-white py-16">
         <div className="container mx-auto px-6 text-center">

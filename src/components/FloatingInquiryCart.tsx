@@ -1,9 +1,9 @@
-import { ShoppingCart } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { useInquiryCart } from '@/contexts/InquiryCartContext';
-import { InquiryCartDrawer } from './InquiryCartDrawer';
-import { useState } from 'react';
+import { ShoppingCart } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { useInquiryCart } from "@/contexts/InquiryCartContext";
+import { InquiryCartDrawer } from "./InquiryCartDrawer";
+import { useState } from "react";
 
 export const FloatingInquiryCart = () => {
   const { state } = useInquiryCart();
@@ -15,7 +15,7 @@ export const FloatingInquiryCart = () => {
       <div className="fixed top-20 right-6 z-50">
         <Button
           onClick={() => setIsDrawerOpen(true)}
-          className="h-14 px-4 bg-stone-800 hover:bg-stone-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full"
+          className="h-14 px-6 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full"
         >
           <ShoppingCart className="w-5 h-5 mr-2" />
           <span className="hidden sm:inline">Inquiry Cart</span>

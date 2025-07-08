@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 const Navigation = () => {
   const location = useLocation();
-  
+
   const navItems = [
     { name: "Home", path: "/" },
     { name: "Catalogue", path: "/catalogue" },
@@ -13,7 +13,7 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="bg-white shadow-md border-b border-stone-200">
+    <nav className="bg-white shadow-md border-b border-stone-200 fixed top-0 left-0 w-full z-50">
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo section */}
@@ -22,7 +22,7 @@ const Navigation = () => {
               ANR Concrete Studio
             </div>
           </div>
-          
+
           {/* Navigation links */}
           <div className="flex space-x-8">
             {navItems.map((item) => (
